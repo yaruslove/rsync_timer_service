@@ -1,0 +1,10 @@
+[Unit]
+Description=rsync_timer
+Requires=rsync_to_jetson.service
+
+[Timer]
+OnUnitInactiveSec=1
+Unit=rsync_to_jetson.service
+
+[Install]
+WantedBy=timers.target

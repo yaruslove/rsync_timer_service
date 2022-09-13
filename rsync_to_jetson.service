@@ -1,0 +1,23 @@
+[Unit]
+Description=rsync_to_jetson
+Requires=network.target
+After=network.target
+
+[Service]
+Type=oneshot
+Nice=-19
+IOSchedulingPriority=0
+ExecStart=sudo rsync -avzhc    --exclude .DS_Store \
+                --exclude 'incass_models' \
+                --exclude '*.pkl' \
+                --exclude '*.log' \
+                --exclude '*.uds' \
+                --exclude '*.out' \
+                --exclude '__pycache__' \
+                -e "ssh -i /home/msi/.ssh/id_rsa" \
+                /home/api_source/ \
+                pure@192.168.181.8:/home/api_distanation/ \
+                --delete
+
+[Install]
+WantedBy=multi-user.target
