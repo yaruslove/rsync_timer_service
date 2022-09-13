@@ -5,7 +5,8 @@ ssh-copy-id -i ~/.ssh/id_rsa.pub pure@192.168.181.8
 
 ### Install rsync on client and server
 
-######## Команда синхронизации ##########
+## Команда синхронизации  
+```bash
 sudo rsync -avzhc    --exclude .DS_Store \
                 --exclude 'incass_models' \
                 --exclude '*.pkl' \
@@ -17,31 +18,35 @@ sudo rsync -avzhc    --exclude .DS_Store \
                 /home/api_source/ \
                 pure@192.168.181.8:/home/api_distanation/ \
                 --delete
+```
 
-######## Команда синхронизации ##########
+## Команда синхронизации
 Создаем саму службу как в ./systemd_services/rsync_to_jetson.service
 
 и кладем её в
+```bash
 /etc/systemd/system/rsync_to_jetson.service
+```
+
+## Создаем таймер
+Создаем саму службу как в ./systemd_services/timer_rsync_jetson.timer  
+
+и кладем её в  
+/etc/systemd/system/timer_rsync_jetson.timer  
 
 
-###### Создаем таймер ########
-Создаем саму службу как в ./systemd_services/timer_rsync_jetson.timer
-
-и кладем её в
-/etc/systemd/system/timer_rsync_jetson.timer
-
-
-##### Обновить службу
-### copy services to /etc/systemd/
-service
+## Обновить службу
+**copy services to /etc/systemd/**
+```bash
+## service
 sudo cp /home/msi/run_service/rsync_to_jetson.service /etc/systemd/system/
-timer
+## timer
 sudo cp /home/msi/run_service/timer_rsync_jetson.timer /etc/systemd/system/
+```
 
 
-
-###### Запуск  ######
+## Запуск 
+```bash
 systemctl daemon-reload
 
 sudo systemctl enable rsync_to_jetson.service
@@ -49,9 +54,10 @@ sudo systemctl enable timer_rsync_jetson.timer
 
 sudo systemctl start rsync_to_jetson.service
 sudo systemctl start timer_rsync_jetson.timer
+```
 
-
-##### Выключение Disable 
+## Выключение Disable 
+```bash
 sudo systemctl stop rsync_to_jetson.service
 sudo systemctl stop timer_rsync_jetson.timer
 
@@ -60,19 +66,23 @@ sudo systemctl disable timer_rsync_jetson.timer
 
 systemctl status rsync_to_jetson.service
 systemctl status timer_rsync_jetson.timer
-
+```
 ## Delete
+```bash
 sudo rm /etc/systemd/system/rsync_to_jetson.service
 sudo rm /etc/systemd/system/timer_rsync_jetson.timer
+```
 
-
-# Ensure all is well
-journalctl -f -u iridium-rsync_to_jetson.service
-
-
-
-#### Status
-
+## Status
+```bash
 systemctl status rsync_to_jetson.service
 systemctl status timer_rsync_jetson.timer
+```
+
+# Ensure all is well
+```bash
+journalctl -f -u iridium-rsync_to_jetson.service
+```
+
+
 
